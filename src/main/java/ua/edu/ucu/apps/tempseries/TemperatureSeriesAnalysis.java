@@ -3,7 +3,6 @@ package ua.edu.ucu.apps.tempseries;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 
-
 public class TemperatureSeriesAnalysis {
 
     private double[] series;
@@ -15,12 +14,15 @@ public class TemperatureSeriesAnalysis {
     }
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
-        for (double i: temperatureSeries) {
-            if (i <= -273){
-                throw new InputMismatchException("There is no such temperature in nature");
+        for (double i : temperatureSeries) {
+            final int LOWEST = -273;
+            if (i <= LOWEST) {
+                throw new InputMismatchException(
+                        "There is no such temperature in nature");
             }
         }
-        this.series = Arrays.copyOf(temperatureSeries, temperatureSeries.length);
+        this.series = Arrays.copyOf(temperatureSeries,
+                temperatureSeries.length);
         int len = series.length;
         this.len = len;
         this.capacity = len;
@@ -42,11 +44,11 @@ public class TemperatureSeriesAnalysis {
 
         double sum = 0;
 
-        for (double i: this.series) {
+        for (double i : this.series) {
             sum += i;
         }
 
-        return sum/len;
+        return sum / len;
 
     }
 
@@ -120,64 +122,63 @@ public class TemperatureSeriesAnalysis {
     }
 
     public double[] findTempsLessThen(double tempValue) {
-        double[] needed_temps = new double[len];
+        double[] neededTemps = new double[len];
         int counter = 0;
 
-        for (double i: series) {
+        for (double i : series) {
             if (tempValue > i) {
-                needed_temps[counter] = i;
+                neededTemps[counter] = i;
                 ++counter;
             }
         }
 
-        double[] needed = Arrays.copyOf(needed_temps, counter);
+        double[] needed = Arrays.copyOf(neededTemps, counter);
 
         return needed;
     }
 
     public double[] findTempsGreaterThen(double tempValue) {
-        double[] needed_temps = new double[len];
+        double[] neededTemps = new double[len];
         int counter = 0;
 
-        for (double i: series) {
+        for (double i : series) {
             if (tempValue <= i) {
-                needed_temps[counter] = i;
+                neededTemps[counter] = i;
                 ++counter;
             }
         }
 
-        double[] needed = Arrays.copyOf(needed_temps, counter);
+        double[] needed = Arrays.copyOf(neededTemps, counter);
 
         return needed;
     }
 
     public double[] findTempsInRange(double lowerBound, double upperBound) {
-        double[] needed_temps = new double[len];
+        double[] neededTemps = new double[len];
         int counter = 0;
 
-        for (double i: series) {
+        for (double i : series) {
             if (lowerBound < i && upperBound >= i) {
-                needed_temps[counter] = i;
+                neededTemps[counter] = i;
                 ++counter;
             }
         }
 
-        double[] needed = Arrays.copyOf(needed_temps, counter);
+        double[] needed = Arrays.copyOf(neededTemps, counter);
 
         return needed;
     }
 
-
     public void reset() {
-        series =  new double[0];
+        series = new double[0];
         len = 0;
         capacity = 0;
     }
 
     public double[] sortTemps() {
-        double[] new_series = Arrays.copyOf(series, len);
-        Arrays.sort(new_series);
-        return new_series;
+        double[] newSeries = Arrays.copyOf(series, len);
+        Arrays.sort(newSeries);
+        return newSeries;
     }
 
     public TempSummaryStatistics summaryStatistics() {
@@ -186,20 +187,20 @@ public class TemperatureSeriesAnalysis {
 
     public int addTemps(double... temps) {
         int len1 = temps.length;
-        int abs_len = len1 + len;
+        int absLen = len1 + len;
 
-        if (abs_len >= capacity) {
-            double[] temp = new double[2 * abs_len];
+        if (absLen >= capacity) {
+            double[] temp = new double[2 * absLen];
             System.arraycopy(series, 0, temp, 0, len);
             series = temp;
-            capacity = 2 * abs_len;
+            capacity = 2 * absLen;
         }
 
         for (int i = 0; i < len1; ++i) {
             series[i + len] = temps[i];
         }
 
-        len = abs_len;
+        len = absLen;
 
         return len;
     }
