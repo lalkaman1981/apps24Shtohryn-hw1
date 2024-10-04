@@ -23,9 +23,9 @@ public class TemperatureSeriesAnalysis {
         }
         this.series = Arrays.copyOf(temperatureSeries,
                 temperatureSeries.length);
-        int len = series.length;
-        this.len = len;
-        this.capacity = len;
+        int lenTemp = series.length;
+        this.len = lenTemp;
+        this.capacity = lenTemp;
     }
 
     public int getLength() {
@@ -57,7 +57,7 @@ public class TemperatureSeriesAnalysis {
 
         double varianceSum = 0.0;
         for (double value : series) {
-            varianceSum += Math.pow(value - ave, 2);
+            varianceSum += (value - ave) * (value - ave);
         }
         double variance = varianceSum / series.length;
 
@@ -186,8 +186,8 @@ public class TemperatureSeriesAnalysis {
     }
 
     public int addTemps(double... temps) {
-        int len1 = temps.length;
-        int absLen = len1 + len;
+        int lenOne = temps.length;
+        int absLen = lenOne + len;
 
         if (absLen >= capacity) {
             double[] temp = new double[2 * absLen];
@@ -196,7 +196,7 @@ public class TemperatureSeriesAnalysis {
             capacity = 2 * absLen;
         }
 
-        for (int i = 0; i < len1; ++i) {
+        for (int i = 0; i < lenOne; ++i) {
             series[i + len] = temps[i];
         }
 
